@@ -1,0 +1,55 @@
+﻿@model RandevuSistemi.Models.Customer
+
+@{
+    ViewData["Title"] = "CreateCustomer";
+}
+
+<h1>Müşteri Ekle</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-controller="Customer" asp-action="CreateCustomer" method="post">
+            @Html.AntiForgeryToken()
+
+            <div asp-validation-summary="All" class="text-danger"></div>
+
+            <!-- Müşteri Adı Soyadı -->
+            <div class="form-group">
+                <label asp-for="Name" class="control-label">Ad Soyad</label>
+                <input asp-for="Name" class="form-control" placeholder="Örn: Ayşe Yılmaz" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <!-- E-posta -->
+            <div class="form-group">
+                <label asp-for="Email" class="control-label">E-posta</label>
+                <input asp-for="Email" class="form-control" placeholder="Örn: ayse@gmail.com" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <!-- Telefon -->
+            <div class="form-group">
+                <label asp-for="Phone" class="control-label">Telefon</label>
+                <input asp-for="Phone" class="form-control" placeholder="Örn: 05xxxxxxxxx" />
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+
+            <!-- Not -->
+            <div class="form-group">
+                <label asp-for="Notes" class="control-label">Not</label>
+                <input asp-for="Notes" class="form-control" placeholder="Örn: İlk kez geliyor" />
+                <span asp-validation-for="Notes" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mt-2">
+                <input type="submit" value="Kaydet" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Listeye Dön</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

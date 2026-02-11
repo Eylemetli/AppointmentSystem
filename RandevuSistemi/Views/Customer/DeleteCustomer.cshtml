@@ -1,0 +1,40 @@
+﻿@model RandevuSistemi.Models.Customer
+
+@{
+    ViewData["Title"] = "Müşteri Sil";
+}
+
+<h1>Müşteri Sil</h1>
+
+<div class="alert alert-warning">
+    <strong>Dikkat!</strong> Bu müşteriyi silmek istediğine emin misin?
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Ad Soyad</dt>
+            <dd class="col-sm-9">@Model.Name</dd>
+
+            <dt class="col-sm-3">E-posta</dt>
+            <dd class="col-sm-9">@Model.Email</dd>
+
+            <dt class="col-sm-3">Telefon</dt>
+            <dd class="col-sm-9">@Model.Phone</dd>
+
+            <dt class="col-sm-3">Oluşturma</dt>
+            <dd class="col-sm-9">@Model.CreatedAt.ToString("dd.MM.yyyy HH:mm")</dd>
+
+            <dt class="col-sm-3">Not</dt>
+            <dd class="col-sm-9">@Model.Notes</dd>
+        </dl>
+
+        <form asp-controller="Customer" asp-action="DeleteCustomer" method="post">
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="Id" />
+
+            <button type="submit" class="btn btn-danger">Sil</button>
+            <a asp-controller="Customer" asp-action="Index" class="btn btn-secondary">Vazgeç</a>
+        </form>
+    </div>
+</div>
