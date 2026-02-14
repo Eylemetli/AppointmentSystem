@@ -7,7 +7,7 @@ namespace RandevuSistemi.Models
 		public int Id { get; set; }
 		[Required]
 		public int CustomerId { get; set; }
-		public List<Customer> Custemers { get; set; }
+		public Customer? customer { get; set; }
 		[Required]
 		public DateTime StartTime { get; set; }
 		[Range(5,240,ErrorMessage ="5-240 arası değer giriniz!")]

@@ -1,0 +1,37 @@
+﻿@model RandevuSistemi.Models.Appointment
+
+@{
+    ViewData["Title"] = "Randevu Sil";
+}
+
+<h1>Randevu Sil</h1>
+
+<div class="alert alert-warning">
+    <strong>Dikkat!</strong> Bu randevuyu silmek istediğine emin misin?
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Başlangıç</dt>
+            <dd class="col-sm-9">@Model.StartTime.ToString("dd.MM.yyyy HH:mm")</dd>
+
+            <dt class="col-sm-3">Süre (dk)</dt>
+            <dd class="col-sm-9">@Model.DurationMinutes</dd>
+
+            <dt class="col-sm-3">Bitiş</dt>
+            <dd class="col-sm-9">@Model.EndTime.ToString("dd.MM.yyyy HH:mm")</dd>
+
+            <dt class="col-sm-3">Durum</dt>
+            <dd class="col-sm-9">@Model.Status</dd>
+        </dl>
+
+        <form asp-controller="Appointment" asp-action="DeleteAppointment" method="post">
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="Id" />
+
+            <button type="submit" class="btn btn-danger">Sil</button>
+            <a asp-controller="Appointment" asp-action="Index" class="btn btn-secondary">Vazgeç</a>
+        </form>
+    </div>
+</div>

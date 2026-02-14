@@ -1,0 +1,49 @@
+﻿@model IEnumerable<RandevuSistemi.Models.Appointment>
+
+@{
+    ViewData["Title"] = "Randevular";
+}
+
+<h1>Randevular</h1>
+
+<p>
+    <a class="btn btn-primary" asp-controller="Appointment" asp-action="CreateAppointment">Yeni Randevu Ekle</a>
+</p>
+
+@if (Model == null || !Model.Any())
+{
+    <div class="alert alert-warning">Henüz randevu eklenmedi.</div>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Müşteri</th>
+                <th>Başlangıç</th>
+                <th>Süre (dk)</th>
+                <th>Bitiş</th>
+                <th>Durum</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@(item.customer != null ? item.customer.Name : "-")</td>
+                    <td>@item.StartTime.ToString("dd.MM.yyyy HH:mm")</td>
+                    <td>@item.DurationMinutes</td>
+                    <td>@item.EndTime.ToString("dd.MM.yyyy HH:mm")</td>
+                    <td>@item.Status</td>
+                    <td>
+                        <a class="btn btn-sm btn-danger"
+                           asp-controller="Appointment"
+                           asp-action="DeleteAppointment"
+                           asp-route-id="@item.Id">Sil</a>
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+}
