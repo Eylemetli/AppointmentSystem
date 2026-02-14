@@ -1,0 +1,57 @@
+﻿@using Microsoft.AspNetCore.Mvc.Rendering
+@model RandevuSistemi.Models.Appointment
+
+@{
+    ViewData["Title"] = "Randevu Düzenle";
+}
+
+<h1>Randevu Düzenle</h1>
+<hr />
+
+<div class="row">
+    <div class="col-md-5">
+        <form asp-controller="Appointment" asp-action="EditAppointment" method="post">
+            @Html.AntiForgeryToken()
+
+            <div asp-validation-summary="All" class="text-danger"></div>
+
+            <input type="hidden" asp-for="Id" />
+
+            <div class="form-group mb-2">
+                <label class="control-label">Müşteri</label>
+                <select asp-for="CustomerId" class="form-select"
+                        asp-items="@(new SelectList(ViewBag.Customers, "Id", "Name"))">
+                    <option value="">-- Müşteri Seç --</option>
+                </select>
+                <span asp-validation-for="CustomerId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-2">
+                <label asp-for="StartTime" class="control-label">Başlangıç</label>
+                <input asp-for="StartTime" class="form-control" type="datetime-local" />
+                <span asp-validation-for="StartTime" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-2">
+                <label asp-for="DurationMinutes" class="control-label">Süre (dk)</label>
+                <input asp-for="DurationMinutes" class="form-control" />
+                <span asp-validation-for="DurationMinutes" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Status" class="control-label">Durum</label>
+                <select asp-for="Status" class="form-select"
+                        asp-items="Html.GetEnumSelectList<RandevuSistemi.Models.AppointmentStatus>()">
+                </select>
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Kaydet</button>
+            <a asp-controller="Appointment" asp-action="Index" class="btn btn-secondary">İptal</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

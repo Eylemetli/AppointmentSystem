@@ -36,12 +36,16 @@ else
                     <td>@item.EndTime.ToString("dd.MM.yyyy HH:mm")</td>
                     <td>@item.Status</td>
                     <td>
+                        <a class="btn btn-sm btn-warning"
+                           asp-controller="Appointment"
+                           asp-action="EditAppointment"
+                           asp-route-id="@item.Id">Düzenle</a>
                         <a class="btn btn-sm btn-danger"
                            asp-controller="Appointment"
                            asp-action="DeleteAppointment"
                            asp-route-id="@item.Id">Sil</a>
                     </td>
-
+                                        
                 </tr>
             }
         </tbody>

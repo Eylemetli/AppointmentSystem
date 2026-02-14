@@ -1,0 +1,45 @@
+﻿@model RandevuSistemi.ViewModels.HomeIndexViewModel
+
+@{
+    ViewData["Title"] = "Anasayfa";
+}
+
+<h1>Anasayfa</h1>
+
+<p><strong>Toplam müşteri:</strong> @Model.CustomerCount</p>
+
+<p>
+    <a class="btn btn-primary" asp-controller="Customer" asp-action="CreateCustomer">Müşteri Ekle</a>
+    <a class="btn btn-success" asp-controller="Appointment" asp-action="CreateAppointment">Randevu Ekle</a>
+</p>
+
+<h3>Yaklaşan 5 Randevu</h3>
+
+@if (Model.UpcomingAppointments == null || !Model.UpcomingAppointments.Any())
+{
+    <div class="alert alert-info">Yaklaşan randevu yok.</div>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Müşteri</th>
+                <th>Başlangıç</th>
+                <th>Süre</th>
+                <th>Durum</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var a in Model.UpcomingAppointments)
+            {
+                <tr>
+                    <td>@(a.customer != null ? a.customer.Name : "-")</td>
+                    <td>@a.StartTime.ToString("dd.MM.yyyy HH:mm")</td>
+                    <td>@a.DurationMinutes dk</td>
+                    <td>@a.Status</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
