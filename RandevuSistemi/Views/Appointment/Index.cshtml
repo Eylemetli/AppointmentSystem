@@ -4,50 +4,133 @@
     ViewData["Title"] = "Randevular";
 }
 
-<h1>Randevular</h1>
+<div class="page-head">
+    <div>
+        <div class="page-title2">Randevular</div>
+        <div class="page-sub2">Tüm randevuları buradan yönet.</div>
+    </div>
 
-<p>
-    <a class="btn btn-primary" asp-controller="Appointment" asp-action="CreateAppointment">Yeni Randevu Ekle</a>
-</p>
+    <div class="head-actions">
+        <a class="btn btn-outline-secondary btn-sm" asp-controller="Home" asp-action="Index">Anasayfa</a>
+        <a class="btn btn-warning btn-sm" asp-controller="Appointment" asp-action="CreateAppointment">+ Randevu</a>
+    </div>
+</div>
 
 @if (Model == null || !Model.Any())
 {
-    <div class="alert alert-warning">Henüz randevu eklenmedi.</div>
+    <div class="empty-wrap">
+        <div class="empty-card">
+            <div class="empty-emoji">🗓️</div>
+            <div class="empty-title">Henüz randevu yok</div>
+            <div class="empty-sub">İlk randevunu oluşturmak için butona tıkla.</div>
+            <a class="btn btn-primary mt-2" asp-controller="Appointment" asp-action="CreateAppointment">Randevu Oluştur</a>
+        </div>
+    </div>
 }
 else
 {
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Müşteri</th>
-                <th>Başlangıç</th>
-                <th>Süre (dk)</th>
-                <th>Bitiş</th>
-                <th>Durum</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>@(item.customer != null ? item.customer.Name : "-")</td>
-                    <td>@item.StartTime.ToString("dd.MM.yyyy HH:mm")</td>
-                    <td>@item.DurationMinutes</td>
-                    <td>@item.EndTime.ToString("dd.MM.yyyy HH:mm")</td>
-                    <td>@item.Status</td>
-                    <td>
-                        <a class="btn btn-sm btn-warning"
-                           asp-controller="Appointment"
-                           asp-action="EditAppointment"
-                           asp-route-id="@item.Id">Düzenle</a>
-                        <a class="btn btn-sm btn-danger"
-                           asp-controller="Appointment"
-                           asp-action="DeleteAppointment"
-                           asp-route-id="@item.Id">Sil</a>
-                    </td>
-                                        
-                </tr>
-            }
-        </tbody>
-    </table>
+    <div class="list-wrap">
+        @foreach (var a in Model)
+        {
+            var start = a.StartTime;
+            var end = a.EndTime;
+            var statusText = a.Status.ToString();
+
+            <div class="appt-card">
+                <div class="appt-left">
+                    <div class="appt-name">@a.customer?.Name</div>
+
+                    <div class="appt-meta">
+                        <span class="meta-pill">
+                            🕒 @start.ToString("dd.MM.yyyy HH:mm")
+                        </span>
+                        <span class="meta-pill">
+                            ⏱️ @a.DurationMinutes dk
+                        </span>
+                        <span class="meta-pill soft">
+                            ⏭️ @end.ToString("HH:mm")
+                        </span>
+                    </div>
+                </div>
+
+                <div class="appt-right">
+                    <span class="status-badge">@statusText</span>
+
+                    <div class="appt-actions">
+                        <a class="btn btn-sm btn-outline-primary"
+                           asp-controller="Appointment" asp-action="EditAppointment" asp-route-id="@a.Id">Düzenle</a>
+
+                        <a class="btn btn-sm btn-outline-danger"
+                           asp-controller="Appointment" asp-action="DeleteAppointment" asp-route-id="@a.Id">Sil</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
 }
+
+<style>
+    .page-head{
+        display:flex; align-items:flex-end; justify-content:space-between; gap:12px;
+        margin-bottom: 14px;
+    }
+    .page-title2{ font-size: 1.6rem; font-weight: 900; letter-spacing:.2px; }
+    .page-sub2{ color:#6c757d; }
+    .head-actions{ display:flex; gap:8px; }
+
+    .empty-wrap{ display:flex; justify-content:center; }
+    .empty-card{
+        width:min(560px, 100%);
+        background:#fff; border-radius:18px;
+        box-shadow:0 10px 26px rgba(0,0,0,.08);
+        padding:22px; text-align:center;
+    }
+    .empty-emoji{ font-size:36px; }
+    .empty-title{ font-weight:900; font-size:1.2rem; margin-top:6px; }
+    .empty-sub{ color:#6c757d; }
+
+    .list-wrap{ display:flex; flex-direction:column; gap:12px; }
+    .appt-card{
+        display:flex; justify-content:space-between; align-items:center; gap:12px;
+        background:#fff; border-radius:18px;
+        box-shadow:0 10px 26px rgba(0,0,0,.08);
+        padding:14px 14px;
+    }
+    .appt-left{ min-width:0; }
+    .appt-name{ font-weight:900; font-size:1.05rem; margin-bottom:6px; }
+    .appt-meta{ display:flex; gap:8px; flex-wrap:wrap; }
+
+    .meta-pill{
+        display:inline-flex; align-items:center; gap:6px;
+        padding:6px 10px;
+        border-radius:999px;
+        background:#f1f3f5;
+        color:#495057;
+        font-size:.92rem;
+    }
+    .meta-pill.soft{
+        background: rgba(13,110,253,.10);
+        color:#0d6efd;
+        font-weight:700;
+    }
+
+    .appt-right{
+        display:flex; flex-direction:column; align-items:flex-end; gap:10px;
+    }
+    .status-badge{
+        padding:6px 12px;
+        border-radius:999px;
+        background: rgba(13,110,253,.12);
+        color:#0d6efd;
+        font-weight:800;
+        font-size:.85rem;
+        text-transform: none;
+        white-space:nowrap;
+    }
+    .appt-actions{ display:flex; gap:8px; }
+
+    @@media (max-width: 576px){
+        .appt-card{ flex-direction:column; align-items:stretch; }
+        .appt-right{ flex-direction:row; align-items:center; justify-content:space-between; }
+    }
+</style>

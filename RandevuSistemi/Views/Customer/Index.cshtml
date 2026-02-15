@@ -1,61 +1,187 @@
 ﻿@model IEnumerable<RandevuSistemi.Models.Customer>
 
 @{
-    ViewData["Title"] = "Müşteri Listesi";
+    ViewData["Title"] = "Müşteriler";
 }
 
-<h1>Müşteri Listesi</h1>
+<div class="page-head">
+    <div>
+        <div class="page-title2">Müşteriler</div>
+        <div class="page-sub2">Müşteri kayıtlarını buradan yönet.</div>
+    </div>
 
-<p>
-    <a class="btn btn-primary" asp-controller="Customer" asp-action="CreateCustomer">Yeni Müşteri Ekle</a>
-</p>
+    <div class="head-actions">
+        <a class="btn btn-outline-secondary btn-sm" asp-controller="Home" asp-action="Index">Anasayfa</a>
+        <a class="btn btn-primary btn-sm" asp-controller="Customer" asp-action="CreateCustomer">+ Müşteri</a>
+    </div>
+</div>
 
 @if (Model == null || !Model.Any())
 {
-    <div class="alert alert-warning">Henüz müşteri eklenmedi.</div>
+    <div class="empty-wrap">
+        <div class="empty-card">
+            <div class="empty-emoji">👥</div>
+            <div class="empty-title">Henüz müşteri yok</div>
+            <div class="empty-sub">İlk müşterini eklemek için butona tıkla.</div>
+            <a class="btn btn-primary mt-2" asp-controller="Customer" asp-action="CreateCustomer">Müşteri Ekle</a>
+        </div>
+    </div>
 }
 else
 {
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Ad Soyad</th>
-                <th>E-posta</th>
-                <th>Telefon</th>
-                <th>Oluşturma Tarihi</th>
-                <th>Not</th>
-                <th style="width:120px;">İşlemler</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>@item.Name</td>
-                    <td>@item.Email</td>
-                    <td>@item.Phone</td>
-                    <td>@item.CreatedAt.ToString("dd.MM.yyyy HH:mm")</td>
-                    <td>@item.Notes</td>
-                    <td>
-                        <a class="btn btn-sm btn-danger"
-                           asp-controller="Customer"
-                           asp-action="DeleteCustomer"
-                           asp-route-id="@item.Id">Sil</a>
-                    </td>
-                    <td>
-                        <a class="btn btn-sm btn-warning"
-                           asp-controller="Customer"
-                           asp-action="EditCustomer"
-                           asp-route-id="@item.Id">Düzenle</a>
+    <div class="list-wrap">
+        @foreach (var c in Model)
+        {
+            <div class="appt-card">
+                <div class="appt-left">
+                    <div class="appt-name">@c.Name</div>
 
-                        <a class="btn btn-sm btn-danger"
-                           asp-controller="Customer"
-                           asp-action="DeleteCustomer"
-                           asp-route-id="@item.Id">Sil</a>
-                    </td>
+                    <div class="cust-meta">
+                        <span class="meta-pill">📧 @c.Email</span>
+                        <span class="meta-pill">📞 @c.Phone</span>
 
-                </tr>
-            }
-        </tbody>
-    </table>
+                        @if (!string.IsNullOrWhiteSpace(c.Notes))
+                        {
+                            <span class="meta-pill soft">📝 @c.Notes</span>
+                        }
+                    </div>
+                </div>
+
+                <div class="appt-right">
+                    <div class="appt-actions">
+                        <a class="btn btn-sm btn-outline-primary"
+                           asp-controller="Customer" asp-action="EditCustomer" asp-route-id="@c.Id">Düzenle</a>
+
+                        <a class="btn btn-sm btn-outline-danger"
+                           asp-controller="Customer" asp-action="DeleteCustomer" asp-route-id="@c.Id">Sil</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
 }
+
+<style>
+    .page-head {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 14px;
+    }
+
+    .page-title2 {
+        font-size: 1.6rem;
+        font-weight: 900;
+        letter-spacing: .2px;
+    }
+
+    .page-sub2 {
+        color: #6c757d;
+    }
+
+    .head-actions {
+        display: flex;
+        gap: 8px;
+    }
+
+    .empty-wrap {
+        display: flex;
+        justify-content: center;
+    }
+
+    .empty-card {
+        width: min(560px, 100%);
+        background: #fff;
+        border-radius: 18px;
+        box-shadow: 0 10px 26px rgba(0,0,0,.08);
+        padding: 22px;
+        text-align: center;
+    }
+
+    .empty-emoji {
+        font-size: 36px;
+    }
+
+    .empty-title {
+        font-weight: 900;
+        font-size: 1.2rem;
+        margin-top: 6px;
+    }
+
+    .empty-sub {
+        color: #6c757d;
+    }
+
+    .list-wrap {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .appt-card {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        background: #fff;
+        border-radius: 18px;
+        box-shadow: 0 10px 26px rgba(0,0,0,.08);
+        padding: 14px 14px;
+    }
+
+    .appt-left {
+        min-width: 0;
+    }
+
+    .appt-name {
+        font-weight: 900;
+        font-size: 1.05rem;
+        margin-bottom: 6px;
+    }
+
+    .cust-meta {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .meta-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: #f1f3f5;
+        color: #495057;
+        font-size: .92rem;
+        max-width: 100%;
+    }
+
+        .meta-pill.soft {
+            background: rgba(13,110,253,.10);
+            color: #0d6efd;
+            font-weight: 700;
+        }
+
+    .appt-right {
+        display: flex;
+        align-items: center;
+    }
+
+    .appt-actions {
+        display: flex;
+        gap: 8px;
+    }
+
+    @@media (max-width: 576px) {
+        .appt-card {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .appt-right {
+            justify-content: flex-end;
+        }
+    }
+</style>

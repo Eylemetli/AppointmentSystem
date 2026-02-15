@@ -1,55 +1,94 @@
 ﻿@model RandevuSistemi.Models.Customer
 
 @{
-    ViewData["Title"] = "CreateCustomer";
+    ViewData["Title"] = "Müşteri Ekle";
 }
 
-<h1>Müşteri Ekle</h1>
+<div class="page-top">
+    <div class="page-hero hero-customer">
+        <div class="hero-icon">👤</div>
+        <div>
+            <div class="hero-title">Müşteri Ekle</div>
+            <div class="hero-sub">Ad, e-posta ve telefon bilgilerini gir.</div>
+        </div>
+        <div class="hero-actions">
+            <a class="btn btn-light btn-sm" asp-controller="Home" asp-action="Index">Anasayfa</a>
+            <a class="btn btn-outline-light btn-sm" asp-controller="Customer" asp-action="Index">Müşteriler</a>
+        </div>
+    </div>
+</div>
 
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-controller="Customer" asp-action="CreateCustomer" method="post">
-            @Html.AntiForgeryToken()
+<div class="form-shell">
+    <div class="card card-shadow border-0">
+        <div class="card-body p-4">
+            <form asp-controller="Customer" asp-action="CreateCustomer" method="post">
+                @Html.AntiForgeryToken()
 
-            <div asp-validation-summary="All" class="text-danger"></div>
+                <div asp-validation-summary="All" class="text-danger mb-3"></div>
 
-            <!-- Müşteri Adı Soyadı -->
-            <div class="form-group">
-                <label asp-for="Name" class="control-label">Ad Soyad</label>
-                <input asp-for="Name" class="form-control" placeholder="Örn: Ayşe Yılmaz" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
+                <div class="row g-3">
+                    <div class="col-12">
+                        <label class="form-label fw-semibold">Ad Soyad</label>
+                        <input asp-for="Name" class="form-control form-control-lg" placeholder="Örn: Ayşe Yılmaz" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
 
-            <!-- E-posta -->
-            <div class="form-group">
-                <label asp-for="Email" class="control-label">E-posta</label>
-                <input asp-for="Email" class="form-control" placeholder="Örn: ayse@gmail.com" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">E-posta</label>
+                        <input asp-for="Email" class="form-control form-control-lg" placeholder="ornek@mail.com" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
 
-            <!-- Telefon -->
-            <div class="form-group">
-                <label asp-for="Phone" class="control-label">Telefon</label>
-                <input asp-for="Phone" class="form-control" placeholder="Örn: 05xxxxxxxxx" />
-                <span asp-validation-for="Phone" class="text-danger"></span>
-            </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Telefon</label>
+                        <input asp-for="Phone" class="form-control form-control-lg" placeholder="05xxxxxxxxx" />
+                        <span asp-validation-for="Phone" class="text-danger"></span>
+                    </div>
 
-            <!-- Not -->
-            <div class="form-group">
-                <label asp-for="Notes" class="control-label">Not</label>
-                <input asp-for="Notes" class="form-control" placeholder="Örn: İlk kez geliyor" />
-                <span asp-validation-for="Notes" class="text-danger"></span>
-            </div>
+                    <div class="col-12">
+                        <label class="form-label fw-semibold">Not</label>
+                        <textarea asp-for="Notes" class="form-control" rows="3" placeholder="İsteğe bağlı not..."></textarea>
+                        <span asp-validation-for="Notes" class="text-danger"></span>
+                    </div>
+                </div>
 
-            <div class="form-group mt-2">
-                <input type="submit" value="Kaydet" class="btn btn-primary" />
-                <a asp-action="Index" class="btn btn-secondary">Listeye Dön</a>
-            </div>
-        </form>
+                <div class="d-flex gap-2 mt-4">
+                    <button type="submit" class="btn btn-primary btn-lg px-4">Kaydet</button>
+                    <a asp-controller="Customer" asp-action="Index" class="btn btn-outline-secondary btn-lg">İptal</a>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
+
+<style>
+    .page-top { margin-bottom: 16px; }
+    .form-shell{ max-width: 820px; margin: 0 auto; }
+
+    .page-hero{
+        display:flex; align-items:center; gap:14px; justify-content:space-between;
+        padding:18px 18px;
+        border-radius:18px;
+        color:#fff;
+        box-shadow:0 10px 26px rgba(0,0,0,.12);
+        overflow:hidden;
+        position:relative;
+    }
+    .page-hero::after{
+        content:"";
+        position:absolute; right:-40px; top:-40px;
+        width:160px; height:160px;
+        background: rgba(255,255,255,.18);
+        border-radius:50%;
+    }
+    .hero-customer{ background: linear-gradient(135deg, #7a2cff, #ff2d95); }
+
+    .hero-icon{ font-size:34px; }
+    .hero-title{ font-size:1.35rem; font-weight:900; letter-spacing:.2px; line-height:1.1; }
+    .hero-sub{ opacity:.9; font-size:.95rem; }
+    .hero-actions{ display:flex; gap:8px; z-index:1; }
+</style>

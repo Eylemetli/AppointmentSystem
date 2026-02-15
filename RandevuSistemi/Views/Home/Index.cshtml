@@ -1,45 +1,88 @@
 ﻿@model RandevuSistemi.ViewModels.HomeIndexViewModel
-
 @{
     ViewData["Title"] = "Anasayfa";
 }
 
-<h1>Anasayfa</h1>
+<div class="home-header">
+    <div>
+        <h1 class="home-title">Randevu Paneli</h1>
+        <div class="home-subtitle">Hızlı işlemler • yaklaşan randevular</div>
+    </div>
+</div>
 
-<p><strong>Toplam müşteri:</strong> @Model.CustomerCount</p>
+<!-- Hızlı İşlemler (Kartlar) -->
+<div class="quick-grid">
+    <a class="quick-card c1" asp-controller="Appointment" asp-action="CreateAppointment">
+        <div class="quick-icon">📅</div>
+        <div class="quick-text">Randevu Oluştur</div>
+    </a>
 
-<p>
-    <a class="btn btn-primary" asp-controller="Customer" asp-action="CreateCustomer">Müşteri Ekle</a>
-    <a class="btn btn-success" asp-controller="Appointment" asp-action="CreateAppointment">Randevu Ekle</a>
-</p>
+    <a class="quick-card c2" asp-controller="Customer" asp-action="Index">
+        <div class="quick-icon">👥</div>
+        <div class="quick-text">Müşteriler</div>
+    </a>
 
-<h3>Yaklaşan 5 Randevu</h3>
+    <a class="quick-card c3" asp-controller="Customer" asp-action="CreateCustomer">
+        <div class="quick-icon">➕</div>
+        <div class="quick-text">Müşteri Ekle</div>
+    </a>
 
-@if (Model.UpcomingAppointments == null || !Model.UpcomingAppointments.Any())
-{
-    <div class="alert alert-info">Yaklaşan randevu yok.</div>
-}
-else
-{
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Müşteri</th>
-                <th>Başlangıç</th>
-                <th>Süre</th>
-                <th>Durum</th>
-            </tr>
-        </thead>
-        <tbody>
+    <a class="quick-card c4" asp-controller="Appointment" asp-action="Index">
+        <div class="quick-icon">📋</div>
+        <div class="quick-text">Randevular</div>
+    </a>
+</div>
+
+<!-- Kısa Özet -->
+<div class="home-stats">
+    <div class="stat-pill">
+        <div class="stat-label">Toplam Müşteri</div>
+        <div class="stat-value">@Model.CustomerCount</div>
+    </div>
+    <a class="stat-link" asp-controller="Appointment" asp-action="Index">Tüm randevular →</a>
+</div>
+
+<!-- Yaklaşan Randevular -->
+<div class="section-card">
+    <div class="section-head">
+        <div>
+            <div class="section-title">Yaklaşan Randevular</div>
+            <div class="section-sub">Şu andan sonraki en yakın 5 kayıt</div>
+        </div>
+        <a class="btn btn-sm btn-outline-secondary" asp-controller="Appointment" asp-action="Index">Tümünü Gör</a>
+    </div>
+
+    @if (Model.UpcomingAppointments == null || !Model.UpcomingAppointments.Any())
+    {
+        <div class="empty-state">
+            Yaklaşan randevu yok.
+        </div>
+    }
+    else
+    {
+        <div class="appt-list">
             @foreach (var a in Model.UpcomingAppointments)
             {
-                <tr>
-                    <td>@(a.customer != null ? a.customer.Name : "-")</td>
-                    <td>@a.StartTime.ToString("dd.MM.yyyy HH:mm")</td>
-                    <td>@a.DurationMinutes dk</td>
-                    <td>@a.Status</td>
-                </tr>
+                <div class="appt-item">
+                    <div class="appt-main">
+                        <div class="appt-name">@a.customer?.Name</div>
+                        <div class="appt-meta">
+                            <span>@a.StartTime.ToString("dd.MM.yyyy HH:mm")</span>
+                            <span class="dot">•</span>
+                            <span>@a.DurationMinutes dk</span>
+                            <span class="dot">•</span>
+                            <span class="status-chip">@a.Status</span>
+                        </div>
+                    </div>
+
+                    <div class="appt-actions">
+                        <a class="btn btn-sm btn-outline-primary"
+                           asp-controller="Appointment" asp-action="EditAppointment" asp-route-id="@a.Id">Düzenle</a>
+                        <a class="btn btn-sm btn-outline-danger"
+                           asp-controller="Appointment" asp-action="DeleteAppointment" asp-route-id="@a.Id">Sil</a>
+                    </div>
+                </div>
             }
-        </tbody>
-    </table>
-}
+        </div>
+    }
+</div>
